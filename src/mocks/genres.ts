@@ -1,12 +1,5 @@
 export const genres: Genre[] = [
-  {
-    id: 28,
-    name: "Action",
-  },
-  {
-    id: 12,
-    name: "Adventure",
-  },
+  
   {
     id: 16,
     name: "Animation",
@@ -16,6 +9,22 @@ export const genres: Genre[] = [
     name: "Comedy",
   },
   {
+    id: 12,
+    name: "Adventure",
+  },
+  {
+    id: 53,
+    name: "Thriller",
+  },
+  {
+    id: 18,
+    name: "Drama",
+  },
+  {
+    id: 28,
+    name: "Action",
+  },
+  {
     id: 80,
     name: "Crime",
   },
@@ -23,10 +32,7 @@ export const genres: Genre[] = [
     id: 99,
     name: "Documentary",
   },
-  {
-    id: 18,
-    name: "Drama",
-  },
+  
   {
     id: 10751,
     name: "Family",
@@ -63,10 +69,7 @@ export const genres: Genre[] = [
     id: 10770,
     name: "TV Movie",
   },
-  {
-    id: 53,
-    name: "Thriller",
-  },
+  
   {
     id: 10752,
     name: "War",

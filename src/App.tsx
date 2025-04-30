@@ -1,13 +1,34 @@
+import { useState } from "react";
+
 interface AppProps {
   categories: Category[];
   movies: Movie[];
 }
 
 export function App({ categories, movies }: AppProps) {
-  console.log({ categories, movies });
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const handleCategoryClick = (category: Category) => {
+    setSelectedCategory(category);
+  };
+
+  const filteredMovies = movies.filter((movie) => {
+    if (selectedCategory && selectedCategory.id !== 0) {
+      return movie.genre_ids.includes(selectedCategory.id);
+    }
+    return true;
+  }).filter((movie) => {
+    return movie.title.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
+
 
   return (
-    <>
+    <div className="min-h-screen">
       {/* Start: Header Component */}
       <header className="py-10">
         <div className="container mx-auto">
@@ -31,7 +52,7 @@ export function App({ categories, movies }: AppProps) {
                   name="Search"
                   placeholder="Search"
                   className="search"
-                  onChange={() => {}}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <button type="submit" className="search-btn">
                   <img src="./image/search.svg" alt="search" />
@@ -50,30 +71,19 @@ export function App({ categories, movies }: AppProps) {
       </header>
       {/* End: Header Component */}
 
-      <section className="wrapper flex-1">
+      <section className="wrapper flex-1 min-h-screen">
         {/* Start: Categories Component */}
         <div className="categories">
           <div className="container mx-auto text-center">
             <ul className="flex flex-row justify-center categories-list">
               {/* Start: Category */}
-              <li key={"category-1"} onClick={() => {}}>
-                <button className={"px-3 md:px-6 py-3 block"}>Category</button>
-              </li>
-              {/* End: Category */}
-              {/* Start: Category */}
-              <li key={"category-2"} onClick={() => {}}>
-                <button className={"px-3 md:px-6 py-3 block"}>Category</button>
-              </li>
-              {/* End: Category */}
-              {/* Start: Category */}
-              <li key={"category-3"} onClick={() => {}}>
-                <button className={"px-3 md:px-6 py-3 block"}>Category</button>
-              </li>
-              {/* End: Category */}
-              {/* Start: Category */}
-              <li key={"category-4"} onClick={() => {}}>
-                <button className={"px-3 md:px-6 py-3 block"}>Category</button>
-              </li>
+              {categories.map((category, index) => (
+                <li key={index} onClick={() => handleCategoryClick(category)}>
+                  <button className={"px-3 md:px-6 py-3 block " + (selectedCategory?.id === category.id ? "bg-red-500 text-white" : "bg-white text-gray-900")}>
+                    {category.name}
+                  </button>
+                </li>
+              ))}
               {/* End: Category */}
             </ul>
           </div>
@@ -84,45 +94,16 @@ export function App({ categories, movies }: AppProps) {
         <div className="movie-list py-20">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-10">
-              {/* Start: Movie Component */}
-              <div key={"movie-1"} className="single-movie relative">
-                <img src="./image/poster.svg" alt={"movie title"} />
-                <div className="movie-content flex items-center justify-center text-center absolute w-full h-full inset-0 px-4">
-                  <div className="content-inner">
-                    <h3 className="mb-5">{"Movie title"}</h3>
+              {filteredMovies.map((movie) => (
+                <div key={movie.id} className="single-movie relative">
+                  <img src={movie.poster_path} alt={movie.title} />
+                  <div className="movie-content flex items-center justify-center text-center absolute w-full h-full inset-0 px-4">
+                    <div className="content-inner">
+                      <h3 className="mb-5">{movie.title}</h3>
                   </div>
                 </div>
               </div>
-              {/* End: Movie Component */}
-              {/* Start: Movie Component */}
-              <div key={"movie-2"} className="single-movie relative">
-                <img src="./image/poster.svg" alt={"movie title"} />
-                <div className="movie-content flex items-center justify-center text-center absolute w-full h-full inset-0 px-4">
-                  <div className="content-inner">
-                    <h3 className="mb-5">{"Movie title"}</h3>
-                  </div>
-                </div>
-              </div>
-              {/* End: Movie Component */}
-              {/* Start: Movie Component */}
-              <div key={"movie-3"} className="single-movie relative">
-                <img src="./image/poster.svg" alt={"movie title"} />
-                <div className="movie-content flex items-center justify-center text-center absolute w-full h-full inset-0 px-4">
-                  <div className="content-inner">
-                    <h3 className="mb-5">{"Movie title"}</h3>
-                  </div>
-                </div>
-              </div>
-              {/* End: Movie Component */}
-              {/* Start: Movie Component */}
-              <div key={"movie-4"} className="single-movie relative">
-                <img src="./image/poster.svg" alt={"movie title"} />
-                <div className="movie-content flex items-center justify-center text-center absolute w-full h-full inset-0 px-4">
-                  <div className="content-inner">
-                    <h3 className="mb-5">{"Movie title"}</h3>
-                  </div>
-                </div>
-              </div>
+              ))}
               {/* End: Movie Component */}
             </div>
           </div>
@@ -137,6 +118,6 @@ export function App({ categories, movies }: AppProps) {
         </div>
       </footer>
       {/* End: Footer Component */}
-    </>
+    </div>
   );
 }
